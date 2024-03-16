@@ -1,0 +1,31 @@
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Define a function to apply median filter to a signal
+def apply_median_filter(signal, window_size):
+    filtered_signal = np.zeros_like(signal)
+    half_window = window_size // 2
+    
+    for i in range(len(signal)):
+        start_index = max(0, i - half_window)
+        end_index = min(len(signal), i + half_window + 1)
+        window = signal[start_index:end_index]
+        filtered_signal[i] = np.median(window)
+    
+    return filtered_signal
+
+# Generate a random signal with noise
+t = np.linspace(0, 2*np.pi, 100)
+y = np.sin(t) + 0.1 * np.random.randn(len(t))
+
+# Apply median filter to remove noise
+filtered_y = apply_median_filter(y, 5)  # 5 represents the size of the filter window
+
+# Plot the original signal and the filtered signal
+plt.plot(t, y, 'b', label='Original Signal')
+plt.plot(t, filtered_y, 'r', label='Filtered Signal')
+plt.legend()
+plt.xlabel('Time')
+plt.ylabel('Amplitude')
+plt.title('Noise Removal using Median Filter')
+plt.show()
